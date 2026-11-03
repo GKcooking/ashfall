@@ -175,14 +175,32 @@ const touchEvt = (id, x, y, extra = {}) =>
     await page.waitForTimeout(600);
     ok(Number(await text(page, '#mag')) < magBefore, 'mobile: FIRE button shoots (' + magBefore + ' -> ' + await text(page, '#mag') + ')');
 
-    // AIM button enters ADS
+    // AIM is a latch: one tap raises the optic and it stays up until tapped again
+    const tapAim = async (id) => {
+      await page.locator('#tAim').dispatchEvent('pointerdown', touchEvt(id, 0, 0));
+      await page.locator('#tAim').dispatchEvent('pointerup', touchEvt(id, 0, 0));
+    };
     const chHip = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
-    await page.locator('#tAim').dispatchEvent('pointerdown', touchEvt(4, 0, 0));
+    await tapAim(4);
     await page.waitForTimeout(2500);
     const chAds = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
     const scoped = await page.evaluate(() => !document.getElementById('scope').classList.contains('hidden'));
     ok(chAds < chHip || scoped, 'mobile: AIM button enters ADS (crosshair ' + chHip + ' -> ' + chAds + ', scope=' + scoped + ')');
-    await page.locator('#tAim').dispatchEvent('pointerup', touchEvt(4, 0, 0));
+    ok(await page.evaluate(() => document.getElementById('tAim').classList.contains('active')),
+      'mobile: AIM button stays lit while latched');
+
+    // releasing the finger must NOT drop the aim (this was the reported bug)
+    await page.waitForTimeout(1500);
+    const heldScope = await page.evaluate(() => !document.getElementById('scope').classList.contains('hidden'));
+    const heldAds = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
+    ok(heldScope || heldAds < chHip, 'mobile: aim persists after releasing the button (scope=' + heldScope + ')');
+
+    // a second tap returns to hip-fire
+    await tapAim(7);
+    await page.waitForTimeout(2000);
+    const unAimed = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
+    ok(unAimed > heldAds || !(await page.evaluate(() => !document.getElementById('scope').classList.contains('hidden'))),
+      'mobile: tapping AIM again releases the aim (crosshair ' + heldAds + ' -> ' + unAimed + ')');
 
     // SWAP button switches weapon
     await page.locator('#tSwap').dispatchEvent('pointerdown', touchEvt(5, 0, 0));
