@@ -288,6 +288,17 @@ function setupTouch() {
   const joyZone = $('joyZone');
   const lookZone = $('lookZone');
 
+  // Synthetic/edge-case pointer ids can be rejected by the browser; a failed
+  // capture must never break the touch handlers.
+  const capture = (el, id) => {
+    try {
+      if (el.hasPointerCapture && el.hasPointerCapture(id)) return;
+      el.setPointerCapture(id);
+    } catch {
+      /* capture unsupported or pointer already released */
+    }
+  };
+
   joyZone.addEventListener('pointerdown', (e) => {
     if (!touchMode) return;
     e.preventDefault();
@@ -299,7 +310,7 @@ function setupTouch() {
     joyBase.style.left = `${stick.ox}px`;
     joyBase.style.top = `${stick.oy}px`;
     joyBase.style.opacity = '1';
-    joyZone.setPointerCapture(e.pointerId);
+    capture(joyZone, e.pointerId);
   });
 
   joyZone.addEventListener('pointermove', (e) => {
@@ -336,7 +347,7 @@ function setupTouch() {
     lookId = e.pointerId;
     lastLook.x = e.clientX;
     lastLook.y = e.clientY;
-    lookZone.setPointerCapture(e.pointerId);
+    capture(lookZone, e.pointerId);
   });
 
   lookZone.addEventListener('pointermove', (e) => {
@@ -960,7 +971,7 @@ function frame() {
   if (active) {
     updatePlayer(dt);
     updateBots(dt);
-    game.timeLeft -= dt;
+    game.timeLeft -= matchDt;
     if (game.timeLeft <= 0) {
       game.timeLeft = 0;
       endMatch();
