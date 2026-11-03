@@ -640,6 +640,16 @@ export class WeaponView {
     model.position.x += Math.sin(this.bobPhase * 0.7) * 0.0022 * a;
     model.position.y += Math.cos(this.bobPhase * 0.9) * 0.0022 * a;
 
+    // at full magnification on the scoped rifle the optic fills the view,
+    // so the host model is hidden and a dedicated scope overlay is drawn
+    const scopedNow = this.current === 'dmr' && this.ads > 0.88;
+    if (scopedNow !== this.scoped) {
+      this.scoped = scopedNow;
+      for (const key of Object.keys(this.models)) {
+        this.models[key].visible = key === this.current && !scopedNow;
+      }
+    }
+
     // muzzle flash decay
     if (this.flashT > 0) {
       this.flashT -= dt;
