@@ -4,6 +4,7 @@
  * (virtual stick + drag-to-look + on-screen buttons).
  */
 import * as THREE from 'three';
+import './style.css';
 import { City } from './world.js';
 import { Fx } from './fx.js';
 import { GameAudio } from './audio.js';
