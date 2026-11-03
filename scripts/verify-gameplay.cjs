@@ -35,7 +35,25 @@ const touchEvt = (id, x, y, extra = {}) =>
     const start = await text(page, '#startScreen');
     ok(await page.locator('#startScreen').isVisible(), 'desktop: start screen visible');
     ok(/ASHFALL/.test(start), 'desktop: start screen shows ASHFALL title');
-    ok(/6 vs 6/.test(start), 'desktop: brief states 6 vs 6 teams');
+    ok(/CHOOSE YOUR WEAPON/.test(start), 'desktop: lobby offers a weapon choice');
+    ok(await page.locator('#weaponPicker .wcard').count() === 2, 'desktop: lobby lists both weapons');
+
+    // nothing may spill outside the viewport: the title screen is the game screen
+    const fit = await page.evaluate(() => {
+      const r = document.getElementById('startScreen').getBoundingClientRect();
+      return {
+        inside: r.top >= -1 && r.left >= -1 && r.bottom <= innerHeight + 1 && r.right <= innerWidth + 1,
+        scrolls: document.documentElement.scrollHeight > innerHeight + 1 || document.documentElement.scrollWidth > innerWidth + 1,
+      };
+    });
+    ok(fit.inside, 'desktop: title screen fits inside the viewport');
+    ok(!fit.scrolls, 'desktop: no page scrolling around the game');
+
+    // the lobby pick must be carried into the match
+    await page.locator('#weaponPicker .wcard[data-weapon="dmr"]').dispatchEvent('click');
+    await page.waitForTimeout(400);
+    ok(await page.evaluate(() => document.querySelector('#weaponPicker .wcard[data-weapon="dmr"]').classList.contains('selected')),
+      'desktop: lobby weapon card shows the selection');
     await page.screenshot({ path: '/tmp/d_start.png' });
     const variance = Number(execFileSync('convert', ['/tmp/d_start.png', '-format', '%[fx:standard_deviation]', 'info:']).toString().trim());
     ok(variance > 0.03, 'desktop: WebGL city renders, not a blank frame (variance ' + variance.toFixed(3) + ')');
@@ -46,6 +64,9 @@ const touchEvt = (id, x, y, extra = {}) =>
     ok(await page.locator('#hud').isVisible(), 'desktop: HUD appears after DEPLOY');
     ok(/TEAM DEATHMATCH/.test(await text(page, '#scorebar')), 'desktop: scorebar shows TEAM DEATHMATCH');
     ok(await page.locator('#vitals').isVisible(), 'desktop: health panel visible');
+    ok((await text(page, '#weaponName')) === 'SR-25 DMR', 'desktop: lobby choice (SR-25 DMR) is equipped on spawn');
+    await page.keyboard.press('Digit1');
+    await page.waitForTimeout(700);
     ok((await text(page, '#weaponName')) === 'M4A1 CARBINE', 'desktop: primary weapon is M4A1 CARBINE');
     ok((await text(page, '#timer')).match(/^\d+:\d\d$/) !== null, 'desktop: match timer shows (' + await text(page, '#timer') + ')');
 
