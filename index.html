@@ -90,31 +90,26 @@
         <div class="respawn">RESPAWNING IN <span id="respawnTimer">3</span></div>
       </div>
 
-      <!-- ================= START ================= -->
+      <!-- ================= START / LOBBY ================= -->
       <div id="startScreen">
         <div class="start-inner">
-          <div class="brand">
-            <h1>ASHFALL</h1>
-            <p class="sub">ABANDONED CITY · TEAM DEATHMATCH</p>
-          </div>
-          <div class="briefing">
-            <div class="brief-col">
-              <h3>MISSION</h3>
-              <p>6 vs 6. Unlimited respawns. When the clock hits zero, the team with the most kills takes the city.</p>
-            </div>
-            <div class="brief-col">
-              <h3>CONTROLS</h3>
-              <ul>
-                <li><b>WASD</b> move · <b>SHIFT</b> sprint · <b>C</b> crouch</li>
-                <li><b>MOUSE</b> look · <b>LMB</b> fire</li>
-                <li><b>RMB</b> hold or <b>AIM</b> button — aim down sights</li>
-                <li><b>R</b> reload · <b>1 / 2</b> swap weapon · <b>ESC</b> pause</li>
-              </ul>
+          <h1 class="brand-title">ASHFALL</h1>
+
+          <div id="lobby">
+            <div class="lobby-label">CHOOSE YOUR WEAPON</div>
+            <div id="weaponPicker">
+              <button class="wcard" data-weapon="carbine" type="button">
+                <span class="wcard-name">M4A1 CARBINE</span>
+                <span class="wcard-tag">ASSAULT RIFLE · FULL AUTO</span>
+              </button>
+              <button class="wcard" data-weapon="dmr" type="button">
+                <span class="wcard-name">SR-25 DMR</span>
+                <span class="wcard-tag">MARKSMAN · SCOPED</span>
+              </button>
             </div>
           </div>
+
           <button id="deployBtn">DEPLOY</button>
-          <p class="hintline">Click to lock the mouse. Press <b>ESC</b> to release it.</p>
-          <div id="loadStatus">Loading city…</div>
         </div>
       </div>
 
