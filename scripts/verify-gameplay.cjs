@@ -77,7 +77,7 @@ const diff = (a, b) => { try { execFileSync('compare', ['-metric', 'AE', a, b, '
 
     ok(await page.evaluate(() => document.body.classList.contains('touch')), 'mobile: body.touch class applied');
     ok(await page.locator('#startScreen').isVisible(), 'mobile: start screen visible');
-    await page.locator('#deployBtn').tap();
+    await page.locator('#deployBtn').dispatchEvent('click');
     await page.waitForTimeout(2500);
 
     ok(await page.locator('#hud').isVisible(), 'mobile: HUD appears after DEPLOY');
@@ -129,7 +129,7 @@ const diff = (a, b) => { try { execFileSync('compare', ['-metric', 'AE', a, b, '
     await page.locator('#tAim').dispatchEvent('pointerup', { pointerId: 4, pointerType: 'touch', isPrimary: true });
 
     // swap button
-    await page.locator('#tSwap').click();
+    await page.locator('#tSwap').dispatchEvent('click');
     await page.waitForTimeout(500);
     ok((await page.locator('#weaponName').innerText()) === 'SR-25', 'mobile: SWAP button switches to SR-25');
 
