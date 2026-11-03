@@ -646,9 +646,9 @@ export class WeaponView {
     model.position.x += Math.sin(this.bobPhase * 0.7) * 0.0022 * a;
     model.position.y += Math.cos(this.bobPhase * 0.9) * 0.0022 * a;
 
-    // at full magnification on the scoped rifle the optic fills the view,
-    // so the host model is hidden and a dedicated scope overlay is drawn
-    const scopedNow = this.current === 'dmr' && this.ads > 0.88;
+    // At full aim-down-sights the shooter looks through the optic, so the host
+    // model is hidden and a dedicated scope overlay is drawn for either gun.
+    const scopedNow = this.ads > 0.9;
     if (scopedNow !== this.scoped) {
       this.scoped = scopedNow;
       for (const key of Object.keys(this.models)) {

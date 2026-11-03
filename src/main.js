@@ -666,6 +666,9 @@ function updateHud() {
   $('slot2').classList.toggle('active', game.weaponId === 'dmr');
 
   $('scope').classList.toggle('hidden', !weaponView.scoped);
+  $('scope').classList.toggle('wide', game.weaponId !== 'dmr');
+  $('aimBtn').classList.toggle('active', !!input.aiming);
+  $('tAim').classList.toggle('active', !!input.aiming);
   $('crosshair').style.opacity = weaponView.scoped ? '0' : String(1 - game.adsFactor * 0.85);
   $('crosshair').style.transform = `scale(${1 + (1 - game.adsFactor) * 0.55})`;
 
