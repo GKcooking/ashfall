@@ -74,6 +74,8 @@ export class Bot {
     this.patrol = this._pickPatrol(position);
     this.moving = false;
     this.lastAttacker = null;
+    this._eyePos = new THREE.Vector3();
+    this._missPoint = new THREE.Vector3();
   }
 
   get position() {
@@ -197,7 +199,7 @@ export class Bot {
       if (this.target) {
         const dist = this.target.position.distanceTo(this.root.position);
         this.hasLOS =
-          dist < 95 && this.city.hasLineOfSight(this.eye(_v), this.target.eye);
+          dist < 95 && this.city.hasLineOfSight(this.eyePos, this.target.eyePos);
       } else {
         this.hasLOS = false;
       }
@@ -302,14 +304,14 @@ export class Bot {
 
     if (Math.random() > chance) {
       // miss: dust kicks up near the target
-      const near = target.eye.clone().add(
+      const near = this._missPoint.copy(target.eyePos).add(
         new THREE.Vector3((Math.random() - 0.5) * 2.6, (Math.random() - 0.4) * 1.4, (Math.random() - 0.5) * 2.6)
       );
       fx.tracer(from, near, 0xffd08a, 0.06);
       return;
     }
 
-    fx.tracer(from, target.eye, 0xffd08a, 0.06);
+    fx.tracer(from, target.eyePos, 0xffd08a, 0.06);
     const dmg = 9 + Math.random() * 8;
     target.takeDamage(dmg, { from: this, headshot: false, fx });
   }
