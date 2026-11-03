@@ -873,8 +873,22 @@ body.touch #crosshair { opacity: 0.85; }
 body:not(.touch) #touch { display: none !important; }
 
 @media (max-width: 720px) {
-  #touchButtons { right: 12px; bottom: 96px; }
-  #tSwap { right: 116px; bottom: 96px; }
+  /*
+   * The control cluster sits above the vitals / ammo panels so the buttons and
+   * the HUD never overlap. Everything stays in the grid, so no child may be
+   * absolutely positioned here.
+   */
+  #touchButtons {
+    right: 12px;
+    bottom: 92px;
+    grid-template-columns: 58px 86px;
+    grid-template-rows: 34px 42px 86px;
+    gap: 7px;
+  }
+  #tFire { width: 86px; height: 86px; }
+  #tAim { width: 66px; height: 66px; }
+  #tReload, #tCrouch { width: 58px; height: 42px; }
+  #tSwap { width: 100%; height: 34px; }
   #joyBase { left: 96px; bottom: 108px; width: 112px; height: 112px; margin: -56px 0 0 -56px; }
   #joyKnob { width: 52px; height: 52px; }
   #vitals { width: 150px; }
@@ -882,12 +896,18 @@ body:not(.touch) #touch { display: none !important; }
 }
 
 @media (max-height: 460px) {
-  #touchButtons { bottom: 8px; grid-template-columns: 54px 78px; grid-template-rows: 40px 78px; }
-  #tFire { width: 78px; height: 78px; }
-  #tAim { width: 64px; height: 64px; }
-  #tReload, #tCrouch { width: 54px; height: 38px; }
-  #tSwap { right: 112px; bottom: 8px; height: 38px; }
-  #joyBase { bottom: 92px; left: 92px; }
+  #touchButtons {
+    bottom: 8px;
+    right: 10px;
+    grid-template-columns: 50px 74px;
+    grid-template-rows: 26px 34px 74px;
+    gap: 5px;
+  }
+  #tFire { width: 74px; height: 74px; }
+  #tAim { width: 58px; height: 58px; }
+  #tReload, #tCrouch { width: 50px; height: 34px; }
+  #tSwap { width: 100%; height: 26px; }
+  #joyBase { bottom: 84px; left: 84px; }
 }
 
 @media (max-width: 720px) {
