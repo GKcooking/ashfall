@@ -284,7 +284,10 @@ function buildScope() {
 
   // turrets
   g.add(cylR(0.011, 0.022, M.opticBody, 12)).position.set(0, tubeY + 0.03, 0.01);
-  g.add(cylR(0.011, 0.022, M.opticBody, 12)).position.set(0.026, tubeY, 0.01).rotateZ(Math.PI / 2);
+  const turretR = cylR(0.011, 0.022, M.opticBody, 12);
+  turretR.position.set(0.026, tubeY, 0.01);
+  turretR.rotation.z = Math.PI / 2;
+  g.add(turretR);
   const parallax = cylR(0.014, 0.018, M.opticBody, 12);
   parallax.rotation.z = Math.PI / 2;
   parallax.position.set(-0.026, tubeY, 0.01);
