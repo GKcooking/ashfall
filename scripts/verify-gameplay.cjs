@@ -34,11 +34,14 @@ const diff = (a, b) => { try { execFileSync('compare', ['-metric', 'AE', a, b, '
     ok((await page.locator('#timer').innerText()).match(/^\d+:\d\d$/) !== null, 'desktop: match timer running (' + await page.locator('#timer').innerText() + ')');
     ok((await page.locator('#weaponName').innerText()) === 'M4A1 CARBINE', 'desktop: primary weapon M4A1 CARBINE');
 
-    await page.locator('#slot2').click();
-    await page.waitForTimeout(500);
+    // page layout keeps shifting while bots update the HUD, so skip Playwright's
+    // scroll-into-view/stability wait and dispatch the real user click.
+    await page.locator('#slot2').dispatchEvent('click');
+    await page.waitForTimeout(600);
     ok((await page.locator('#weaponName').innerText()) === 'SR-25', 'desktop: weapon swap to SR-25');
-    await page.locator('#slot1').click();
-    await page.waitForTimeout(400);
+    await page.keyboard.press('Digit1');
+    await page.waitForTimeout(600);
+    ok((await page.locator('#weaponName').innerText()) === 'M4A1 CARBINE', 'desktop: keyboard 1 swaps back to M4A1');
 
     const before = await page.locator('#mag').innerText();
     await page.mouse.move(640, 360);
