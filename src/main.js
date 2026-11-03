@@ -1063,7 +1063,6 @@ function init() {
       lobbyWeapon = card.dataset.weapon;
       syncCards();
       audio.unlock();
-      audio.uiClick?.();
     });
   }
   syncCards();
