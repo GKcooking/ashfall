@@ -413,6 +413,9 @@ function setupTouch() {
   $('aimBtn').addEventListener('pointerleave', releaseAim);
 }
 
+/* The weapon chosen in the lobby; carried into each match. */
+let lobbyWeapon = 'carbine';
+
 /* ================================================================ game */
 const game = {
   state: 'menu', // menu | playing | paused | ended | dead
@@ -1041,6 +1044,26 @@ function init() {
 
   $('slot1').addEventListener('click', () => swapWeapon('carbine'));
   $('slot2').addEventListener('click', () => swapWeapon('dmr'));
+
+  /* lobby weapon choice ------------------------------------------------ */
+  const cards = Array.from(document.querySelectorAll('#weaponPicker .wcard'));
+  const syncCards = () => {
+    for (const card of cards) {
+      const on = card.dataset.weapon === lobbyWeapon;
+      card.classList.toggle('selected', on);
+      card.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  };
+  for (const card of cards) {
+    card.addEventListener('click', () => {
+      if (!WEAPONS[card.dataset.weapon]) return;
+      lobbyWeapon = card.dataset.weapon;
+      syncCards();
+      audio.unlock();
+      audio.uiClick?.();
+    });
+  }
+  syncCards();
 
   canvas.addEventListener('click', () => {
     if (game.state === 'playing' && !touchMode && !locked) lockPointer();
