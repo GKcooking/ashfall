@@ -73,14 +73,33 @@ const touchEvt = (id, x, y, extra = {}) =>
     const magAfter = Number(await text(page, '#mag'));
     ok(magAfter < magBefore, 'desktop: firing consumes ammo (' + magBefore + ' -> ' + magAfter + ')');
 
-    // right mouse enters ADS: crosshair fades and/or a scope overlay appears
+    // right mouse enters ADS on the carbine: crosshair tightens
     const chHip = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
     await page.mouse.down({ button: 'right' });
     await page.waitForTimeout(2500);
     const chAds = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
-    const scoped = await page.evaluate(() => !document.getElementById('scope').classList.contains('hidden'));
-    ok(chAds < chHip || scoped, 'desktop: right mouse enters ADS (crosshair ' + chHip + ' -> ' + chAds + ', scope=' + scoped + ')');
+    ok(chAds < chHip, 'desktop: right mouse enters ADS on carbine (crosshair ' + chHip + ' -> ' + chAds + ')');
     await page.mouse.up({ button: 'right' });
+    await page.waitForTimeout(600);
+
+    // the DMR carries a magnified optic: full ADS must reveal the scope overlay
+    await page.locator('#slot2').dispatchEvent('click');
+    await page.waitForTimeout(900);
+    ok(await page.evaluate(() => document.getElementById('scope').classList.contains('hidden')),
+      'desktop: scope overlay hidden while hip-firing the DMR');
+    await page.mouse.down({ button: 'right' });
+    await page.waitForTimeout(4000);
+    const scopeOn = await page.evaluate(() => !document.getElementById('scope').classList.contains('hidden'));
+    const chScoped = Number(await page.evaluate(() => getComputedStyle(document.getElementById('crosshair')).opacity));
+    ok(scopeOn, 'desktop: aiming the DMR reveals the scope overlay');
+    ok(chScoped === 0, 'desktop: crosshair hidden behind the scope (' + chScoped + ')');
+    await page.screenshot({ path: '/tmp/d_scope.png' });
+    await page.mouse.up({ button: 'right' });
+    await page.waitForTimeout(600);
+    ok(await page.evaluate(() => document.getElementById('scope').classList.contains('hidden')),
+      'desktop: releasing aim leaves the scope');
+    await page.keyboard.press('Digit1');
+    await page.waitForTimeout(700);
 
     ok(errs.length === 0, 'desktop: no page/console errors' + (errs.length ? ' -> ' + errs.join(' | ') : ''));
     await page.close();
@@ -148,6 +167,14 @@ const touchEvt = (id, x, y, extra = {}) =>
     await page.locator('#tSwap').dispatchEvent('pointerdown', touchEvt(5, 0, 0));
     await page.waitForTimeout(1200);
     ok((await text(page, '#weaponName')) === 'SR-25 DMR', 'mobile: SWAP button equips SR-25 DMR');
+
+    // AIM button on the scoped DMR must reveal the scope overlay
+    await page.locator('#tAim').dispatchEvent('pointerdown', touchEvt(6, 0, 0));
+    await page.waitForTimeout(4000);
+    ok(await page.evaluate(() => !document.getElementById('scope').classList.contains('hidden')),
+      'mobile: AIM button reveals the DMR scope overlay');
+    await page.locator('#tAim').dispatchEvent('pointerup', touchEvt(6, 0, 0));
+    await page.waitForTimeout(800);
 
     ok(errs.length === 0, 'mobile: no page/console errors' + (errs.length ? ' -> ' + errs.join(' | ') : ''));
     await page.close();
