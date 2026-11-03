@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#0b0d0c" />
+    <title>ASHFALL — Team Deathmatch</title>
+    <meta name="description" content="ASHFALL: a browser first-person shooter team deathmatch in an abandoned city. 6 vs 6, unlimited respawns, most kills wins." />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game"></canvas>
+
+      <!-- ================= HUD ================= -->
+      <div id="hud" class="hidden">
+        <div id="scorebar">
+          <div class="side alpha">
+            <span class="tag">ALPHA</span>
+            <span id="scoreA" class="score">0</span>
+          </div>
+          <div class="clock">
+            <div id="timer">8:00</div>
+            <div class="clock-label">TEAM DEATHMATCH</div>
+          </div>
+          <div class="side bravo">
+            <span id="scoreB" class="score">0</span>
+            <span class="tag">BRAVO</span>
+          </div>
+        </div>
+
+        <div id="killfeed"></div>
+        <div id="aliveCount"><span id="aliveA">6</span> vs <span id="aliveB">6</span></div>
+
+        <div id="crosshair">
+          <span class="ch t"></span>
+          <span class="ch b"></span>
+          <span class="ch l"></span>
+          <span class="ch r"></span>
+          <span class="ch dot"></span>
+        </div>
+        <div id="hitmarker">
+          <span></span><span></span><span></span><span></span>
+        </div>
+
+        <div id="vitals">
+          <div class="vlabel">HEALTH</div>
+          <div class="hbar"><div id="healthFill"></div></div>
+          <div id="healthText">100</div>
+        </div>
+
+        <div id="ammoBox">
+          <div id="weaponName">M4A1 CARBINE</div>
+          <div class="ammo-line">
+            <span id="mag">30</span><span class="slash">/</span><span id="reserve">210</span>
+          </div>
+          <div id="reloadHint">RELOADING…</div>
+        </div>
+
+        <div id="weaponSlots">
+          <button id="slot1" class="slot active" data-weapon="carbine">1 · M4A1</button>
+          <button id="slot2" class="slot" data-weapon="dmr">2 · SR-25</button>
+        </div>
+
+        <button id="aimBtn" type="button" aria-pressed="false">
+          <span class="aim-icon"></span>
+          <span class="aim-label">AIM</span>
+        </button>
+
+        <div id="damageFlash"></div>
+      </div>
+
+      <!-- ================= SCOPE ================= -->
+      <div id="scope" class="hidden">
+        <div class="scope-mask"></div>
+        <div class="scope-inner">
+          <div class="scope-line v"></div>
+          <div class="scope-line h"></div>
+          <div class="scope-mil m1"></div>
+          <div class="scope-mil m2"></div>
+          <div class="scope-mil m3"></div>
+          <div class="scope-dot"></div>
+        </div>
+        <div class="scope-glare"></div>
+      </div>
+
+      <!-- ================= DEATH ================= -->
+      <div id="deathOverlay" class="hidden">
+        <div class="death-title">YOU WERE KILLED</div>
+        <div id="deathBy" class="death-by">BY BRAVO</div>
+        <div class="respawn">RESPAWNING IN <span id="respawnTimer">3</span></div>
+      </div>
+
+      <!-- ================= START ================= -->
+      <div id="startScreen">
+        <div class="start-inner">
+          <div class="brand">
+            <h1>ASHFALL</h1>
+            <p class="sub">ABANDONED CITY · TEAM DEATHMATCH</p>
+          </div>
+          <div class="briefing">
+            <div class="brief-col">
+              <h3>MISSION</h3>
+              <p>6 vs 6. Unlimited respawns. When the clock hits zero, the team with the most kills takes the city.</p>
+            </div>
+            <div class="brief-col">
+              <h3>CONTROLS</h3>
+              <ul>
+                <li><b>WASD</b> move · <b>SHIFT</b> sprint · <b>C</b> crouch</li>
+                <li><b>MOUSE</b> look · <b>LMB</b> fire</li>
+                <li><b>RMB</b> hold or <b>AIM</b> button — aim down sights</li>
+                <li><b>R</b> reload · <b>1 / 2</b> swap weapon · <b>ESC</b> pause</li>
+              </ul>
+            </div>
+          </div>
+          <button id="deployBtn">DEPLOY</button>
+          <p class="hintline">Click to lock the mouse. Press <b>ESC</b> to release it.</p>
+          <div id="loadStatus">Loading city…</div>
+        </div>
+      </div>
+
+      <!-- ================= MATCH END ================= -->
+      <div id="endScreen" class="hidden">
+        <div class="end-inner">
+          <div id="endResult" class="end-result">VICTORY</div>
+          <div id="endScore" class="end-score">72 — 65</div>
+          <div id="endDetail" class="end-detail">ALPHA wins the city</div>
+          <button id="rematchBtn">REMATCH</button>
+        </div>
+      </div>
+
+      <div id="pauseHint" class="hidden">PAUSED — click to resume</div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
