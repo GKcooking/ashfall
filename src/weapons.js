@@ -379,7 +379,10 @@ function buildCarbine() {
   g.add(magg);
   // pressure switch / laser box on the handguard
   g.add(box(0.03, 0.026, 0.05, M.blackPoly, 0.036, 0.012, -0.19));
-  g.add(cylR(0.006, 0.012, M.steel, 8)).position.set(0.036, 0.012, -0.215).rotateX(Math.PI / 2);
+  const laserBox = cylR(0.006, 0.012, M.steel, 8);
+  laserBox.position.set(0.036, 0.012, -0.215);
+  laserBox.rotation.x = Math.PI / 2;
+  g.add(laserBox);
 
   g.add(buildHands({ rearZ: 0.075, frontZ: -0.19, gripY: -0.05 }));
   return g;
