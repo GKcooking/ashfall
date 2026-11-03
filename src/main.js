@@ -539,7 +539,7 @@ function startMatch() {
   player.health = player.maxHealth;
   player.position.copy(pickSpawn('alpha'));
   player.crouch = false;
-  game.weaponId = 'carbine';
+  game.weaponId = lobbyWeapon;
   for (const id of ['carbine', 'dmr']) {
     game.ammo[id].mag = WEAPONS[id].magSize;
     game.ammo[id].reserve = WEAPONS[id].reserve;
@@ -1068,12 +1068,6 @@ function init() {
   camera.position.set(0, 6.4, 26);
   camera.lookAt(0, 3, 0);
 
-  const status = $('loadStatus');
-  if (status) {
-    status.textContent = touchMode
-      ? 'Touch controls ready — left stick to move, drag right to look'
-      : 'Click DEPLOY to lock the mouse and drop in';
-  }
   updateHud();
   frame();
 }
