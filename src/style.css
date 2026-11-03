@@ -505,59 +505,78 @@ html, body {
   text-align: center;
 }
 
-.brand h1 {
+.brand-title {
   margin: 0;
-  font-size: clamp(42px, 9vw, 84px);
-  letter-spacing: 0.24em;
+  font-size: clamp(48px, 13vw, 104px);
+  letter-spacing: 0.2em;
   font-weight: 800;
   line-height: 1;
-  background: linear-gradient(180deg, #f2f5ec, #93a08c);
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #f4f7ef, #8fa589);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  filter: drop-shadow(0 10px 34px rgba(0, 0, 0, 0.85));
 }
 
-.brand .sub {
-  margin: 10px 0 0;
-  font-size: 11px;
-  letter-spacing: 0.34em;
+/* ------------------------------------------------------------ lobby */
+#lobby {
+  margin: clamp(18px, 4vh, 34px) 0 clamp(16px, 3.5vh, 30px);
+}
+
+.lobby-label {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  color: var(--dim);
+  margin-bottom: 12px;
+}
+
+#weaponPicker {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.wcard {
+  flex: 1 1 210px;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font);
+  color: rgba(232, 234, 228, 0.72);
+  background: rgba(13, 19, 15, 0.78);
+  border: 1px solid var(--edge);
+  border-radius: 4px;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+}
+
+.wcard:hover { border-color: rgba(200, 225, 200, 0.45); }
+
+.wcard.selected {
+  color: var(--ink);
+  border-color: #9fe0a8;
+  background: rgba(34, 54, 36, 0.85);
+  box-shadow: 0 0 0 1px rgba(159, 224, 168, 0.55), 0 8px 26px rgba(90, 190, 110, 0.18);
+}
+
+.wcard-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.wcard-tag {
+  font-size: 9px;
+  letter-spacing: 0.2em;
   color: var(--dim);
 }
 
-.briefing {
-  display: flex;
-  gap: 28px;
-  margin: 30px 0 26px;
-  text-align: left;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.brief-col {
-  flex: 1 1 260px;
-  background: rgba(14, 20, 16, 0.7);
-  border: 1px solid var(--edge);
-  border-radius: 4px;
-  padding: 14px 16px;
-}
-
-.brief-col h3 {
-  margin: 0 0 8px;
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  color: #9dbb9a;
-}
-
-.brief-col p, .brief-col li {
-  font-size: 12px;
-  line-height: 1.65;
-  letter-spacing: 0.03em;
-  color: rgba(232, 234, 228, 0.78);
-}
-
-.brief-col ul { margin: 0; padding-left: 16px; }
-.brief-col b { color: var(--ink); }
+.wcard.selected .wcard-tag { color: #a9cda6; }
 
 #deployBtn, #rematchBtn {
   font-family: var(--font);
