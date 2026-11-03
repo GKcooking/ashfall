@@ -10,9 +10,6 @@ import { GameAudio } from './audio.js';
 import { WEAPONS, WeaponView } from './weapons.js';
 import { Bot } from './bot.js';
 
-// ?time=<seconds> shortens the match for testing; default is a full 8-minute round.
-const TIME_PARAM = Number(params.get('time'));
-const MATCH_TIME = Number.isFinite(TIME_PARAM) && TIME_PARAM > 0 ? Math.min(TIME_PARAM, 3600) : 8 * 60;
 const PLAYER_RESPAWN = 3;
 const BOT_RESPAWN = 5;
 const TEAM_SIZE = 6;
@@ -21,6 +18,10 @@ const $ = (id) => document.getElementById(id);
 
 /* ------------------------------------------------------------ device */
 const params = new URLSearchParams(location.search);
+
+// ?time=<seconds> shortens the match for testing; default is a full 8-minute round.
+const TIME_PARAM = Number(params.get('time'));
+const MATCH_TIME = Number.isFinite(TIME_PARAM) && TIME_PARAM > 0 ? Math.min(TIME_PARAM, 3600) : 8 * 60;
 const coarse =
   window.matchMedia?.('(pointer: coarse)').matches ||
   'ontouchstart' in window ||
