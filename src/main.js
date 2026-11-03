@@ -417,7 +417,11 @@ function setupTouch() {
 const game = {
   state: 'menu', // menu | playing | paused | ended | dead
   weaponId: 'carbine',
-  currentWeapon: WEAPONS.carbine,  ammo: { carbine: { mag: WEAPONS.carbine.magSize, reserve: WEAPONS.carbine.reserve }, dmr: { mag: WEAPONS.dmr.magSize, reserve: WEAPONS.dmr.reserve } },
+  currentWeapon: WEAPONS.carbine,
+  ammo: {
+    carbine: { mag: WEAPONS.carbine.magSize, reserve: WEAPONS.carbine.reserve },
+    dmr: { mag: WEAPONS.dmr.magSize, reserve: WEAPONS.dmr.reserve },
+  },
   cooldown: 0,
   reloadT: 0,
   reloading: false,
