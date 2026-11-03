@@ -36,7 +36,9 @@ const touchEvt = (id, x, y, extra = {}) =>
     ok(await page.locator('#startScreen').isVisible(), 'desktop: start screen visible');
     ok(/ASHFALL/.test(start), 'desktop: start screen shows ASHFALL title');
     ok(/6 vs 6/.test(start), 'desktop: brief states 6 vs 6 teams');
-    ok(stddevOk('/tmp/d_start.png', page), 'desktop: WebGL city renders (non-blank canvas)');
+    await page.screenshot({ path: '/tmp/d_start.png' });
+    const variance = Number(execFileSync('convert', ['/tmp/d_start.png', '-format', '%[fx:standard_deviation]', 'info:']).toString().trim());
+    ok(variance > 0.03, 'desktop: WebGL city renders, not a blank frame (variance ' + variance.toFixed(3) + ')');
 
     await page.locator('#deployBtn').click();
     await page.waitForTimeout(3000);
