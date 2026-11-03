@@ -10,7 +10,9 @@ import { GameAudio } from './audio.js';
 import { WEAPONS, WeaponView } from './weapons.js';
 import { Bot } from './bot.js';
 
-const MATCH_TIME = 8 * 60;
+// ?time=<seconds> shortens the match for testing; default is a full 8-minute round.
+const TIME_PARAM = Number(params.get('time'));
+const MATCH_TIME = Number.isFinite(TIME_PARAM) && TIME_PARAM > 0 ? Math.min(TIME_PARAM, 3600) : 8 * 60;
 const PLAYER_RESPAWN = 3;
 const BOT_RESPAWN = 5;
 const TEAM_SIZE = 6;
@@ -945,7 +947,11 @@ let elapsed = 0;
 
 function frame() {
   requestAnimationFrame(frame);
-  let dt = clock.getDelta();
+  const rawDt = clock.getDelta();
+  // Simulation uses a clamped step so physics stays stable at low frame rates,
+  // but the match clock must follow real time or a slow device would never end.
+  const matchDt = Math.min(rawDt, 1);
+  let dt = rawDt;
   if (dt > 0.06) dt = 0.06;
   elapsed += dt;
 
