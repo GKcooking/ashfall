@@ -388,7 +388,27 @@ function setupTouch() {
   };
 
   hold($('tFire'), () => (input.firing = true), () => (input.firing = false));
-  hold($('tAim'), () => (input.aiming = true), () => (input.aiming = false));
+
+  /*
+   * AIM is a latching toggle, not a hold: tap once to raise the optic/scope and
+   * it stays up until you tap again. updateHud() keeps the .active styling in
+   * sync with input.aiming, so no class juggling is needed here.
+   */
+  const toggleAim = () => {
+    input.aiming = !input.aiming;
+  };
+  const aimEl = $('tAim');
+  aimEl.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    aimEl.classList.add('pressed');
+    toggleAim();
+  });
+  const aimRelease = (e) => {
+    e.preventDefault();
+    aimEl.classList.remove('pressed');
+  };
+  aimEl.addEventListener('pointerup', aimRelease);
+  aimEl.addEventListener('pointercancel', aimRelease);
 
   $('tReload').addEventListener('pointerdown', (e) => {
     e.preventDefault();
@@ -404,14 +424,11 @@ function setupTouch() {
     $('tCrouch').classList.toggle('active', input.crouch);
   });
 
+  // Desktop on-screen aim button latches the same way as the touch one.
   $('aimBtn').addEventListener('pointerdown', (e) => {
     e.preventDefault();
-    input.aiming = true;
+    input.aiming = !input.aiming;
   });
-  const releaseAim = () => (input.aiming = false);
-  $('aimBtn').addEventListener('pointerup', releaseAim);
-  $('aimBtn').addEventListener('pointercancel', releaseAim);
-  $('aimBtn').addEventListener('pointerleave', releaseAim);
 }
 
 /* The weapon chosen in the lobby; carried into each match. */
