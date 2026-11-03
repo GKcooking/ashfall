@@ -80,8 +80,9 @@ export class Bot {
     return this.root.position;
   }
 
-  eye(out = _v) {
-    return out.set(this.root.position.x, this.root.position.y + 1.56, this.root.position.z);
+  /** Chest/eye height world point, shared contract with the player. */
+  get eyePos() {
+    return this._eyePos.set(this.root.position.x, this.root.position.y + 1.56, this.root.position.z);
   }
 
   _pickPatrol(origin) {
