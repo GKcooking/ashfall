@@ -29,6 +29,8 @@ export const WEAPONS = {
     range: 220,
     optic: 'reddot',
     zoom: 1.6,
+    /* Fraction of look sensitivity removed while scoped (must stay < 1). */
+    zoomSens: 0.55,
   },
   dmr: {
     id: 'dmr',
@@ -51,6 +53,8 @@ export const WEAPONS = {
     range: 400,
     optic: 'scope',
     zoom: 3.2,
+    /* Fraction of look sensitivity removed while scoped (must stay < 1). */
+    zoomSens: 0.78,
   },
 };
 
