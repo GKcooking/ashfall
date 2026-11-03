@@ -781,9 +781,9 @@ html, body {
 
 #tFire {
   grid-column: 2;
-  grid-row: 2;
-  width: 96px;
-  height: 96px;
+  grid-row: 3;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   border-color: rgba(255, 150, 120, 0.4);
   background: radial-gradient(circle at 50% 38%, rgba(120, 52, 40, 0.7), rgba(12, 8, 7, 0.72));
@@ -797,9 +797,9 @@ html, body {
 
 #tAim {
   grid-column: 1;
-  grid-row: 2;
-  width: 76px;
-  height: 76px;
+  grid-row: 3;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
 }
 
